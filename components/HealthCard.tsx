@@ -14,16 +14,16 @@ export function HealthCard({ data, isLoading = false }: HealthCardProps) {
 
   if (isLoading) {
     return (
-      <div className="metric-card animate-pulse">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-full bg-slate-700"></div>
-            <div className="h-6 w-20 bg-slate-700 rounded"></div>
+        <div className="metric-card animate-pulse">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-full bg-slate-200"></div>
+              <div className="h-6 w-20 bg-slate-200 rounded"></div>
+            </div>
+            <div className="h-8 w-12 bg-slate-200 rounded"></div>
           </div>
-          <div className="h-8 w-12 bg-slate-700 rounded"></div>
+          <div className="h-4 w-32 bg-slate-200 rounded"></div>
         </div>
-        <div className="h-4 w-32 bg-slate-700 rounded"></div>
-      </div>
     );
   }
 
@@ -33,15 +33,15 @@ export function HealthCard({ data, isLoading = false }: HealthCardProps) {
   const hrv = data?.hrv || 0;
 
   const getHealthColor = (score: number) => {
-    if (score >= 80) return 'text-green-500';
-    if (score >= 60) return 'text-yellow-500';
-    return 'text-red-500';
+    if (score >= 80) return 'text-success';
+    if (score >= 60) return 'text-warning';
+    return 'text-danger';
   };
 
   const getHealthBgColor = (score: number) => {
-    if (score >= 80) return 'bg-green-500 bg-opacity-20';
-    if (score >= 60) return 'bg-yellow-500 bg-opacity-20';
-    return 'bg-red-500 bg-opacity-20';
+    if (score >= 80) return 'bg-success bg-opacity-20';
+    if (score >= 60) return 'bg-warning bg-opacity-20';
+    return 'bg-danger bg-opacity-20';
   };
 
   return (
@@ -62,7 +62,7 @@ export function HealthCard({ data, isLoading = false }: HealthCardProps) {
       </div>
 
       {expanded ? (
-        <div className="space-y-3 mt-4 pt-4 border-t border-slate-700">
+        <div className="space-y-3 mt-4 pt-4 border-t border-slate-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm text-muted">
               <Moon className="w-4 h-4" />
@@ -71,11 +71,11 @@ export function HealthCard({ data, isLoading = false }: HealthCardProps) {
             <div className="flex items-center gap-2">
               <span className="font-semibold">{sleepHours.toFixed(1)}h</span>
               {sleepHours >= 7 ? (
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                <div className="w-2 h-2 rounded-full bg-success"></div>
               ) : sleepHours >= 6 ? (
-                <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                <div className="w-2 h-2 rounded-full bg-warning"></div>
               ) : (
-                <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                <div className="w-2 h-2 rounded-full bg-danger"></div>
               )}
             </div>
           </div>
@@ -88,11 +88,11 @@ export function HealthCard({ data, isLoading = false }: HealthCardProps) {
             <div className="flex items-center gap-2">
               <span className="font-semibold">{steps.toLocaleString()}</span>
               {steps >= 8000 ? (
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                <div className="w-2 h-2 rounded-full bg-success"></div>
               ) : steps >= 5000 ? (
-                <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                <div className="w-2 h-2 rounded-full bg-warning"></div>
               ) : (
-                <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                <div className="w-2 h-2 rounded-full bg-danger"></div>
               )}
             </div>
           </div>
@@ -105,11 +105,11 @@ export function HealthCard({ data, isLoading = false }: HealthCardProps) {
             <div className="flex items-center gap-2">
               <span className="font-semibold">{hrv.toFixed(0)}ms</span>
               {hrv >= 50 ? (
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                <div className="w-2 h-2 rounded-full bg-success"></div>
               ) : hrv >= 30 ? (
-                <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
+                <div className="w-2 h-2 rounded-full bg-warning"></div>
               ) : (
-                <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                <div className="w-2 h-2 rounded-full bg-danger"></div>
               )}
             </div>
           </div>

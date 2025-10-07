@@ -4,55 +4,69 @@
 
 @layer base {
   :root {
-    /* Professional Finance Theme - Navy + Gold */
-    --color-bg: 15 23 42; /* slate-900 */
-    --color-fg: 248 250 252; /* slate-50 */
-    --color-accent: 255 215 0; /* gold */
-    --color-surface: 30 41 59; /* slate-800 */
-    --color-muted: 148 163 184; /* slate-400 */
-    --color-success: 34 197 94; /* green-500 */
-    --color-warning: 251 191 36; /* amber-400 */
-    --color-danger: 239 68 68; /* red-500 */
+    /* Professional Finance Theme - Light Mode */
+    --color-bg: 248 250 252; /* slate-50 - light background */
+    --color-fg: 15 23 42; /* slate-900 - dark text */
+    --color-accent: 255 167 38; /* amber-500 - golden orange */
+    --color-surface: 255 255 255; /* white - card background */
+    --color-muted: 100 116 139; /* slate-500 - muted text */
+    --color-success: 34 197 94; /* green-500 - success green */
+    --color-warning: 255 193 7; /* amber-500 - golden orange */
+    --color-danger: 239 68 68; /* red-500 - danger red */
+    --color-info: 59 130 246; /* blue-500 - info blue */
+    --color-border: 226 232 240; /* slate-200 - light borders */
     
     --radius-sm: 6px;
     --radius-md: 12px;
     --radius-lg: 20px;
     --radius-full: 9999px;
     
-    --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.3);
-    --shadow-glow: 0 0 20px rgba(255, 215, 0, 0.2);
-    --shadow-float: 0 12px 40px rgba(0, 0, 0, 0.4);
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --shadow-glow: 0 0 20px rgba(255, 167, 38, 0.3);
+    --shadow-float: 0 8px 32px rgba(0, 0, 0, 0.12);
   }
 
   * {
-    @apply border-slate-700;
+    @apply border-slate-200;
   }
   
   body {
     @apply bg-bg text-fg antialiased;
-    background: linear-gradient(135deg, rgb(15 23 42) 0%, rgb(30 41 59) 100%);
+    background: linear-gradient(135deg, rgb(248 250 252) 0%, rgb(241 245 249) 100%);
     min-height: 100vh;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-surface bg-opacity-50 backdrop-blur-lg border border-slate-700 rounded-lg shadow-card;
+    @apply bg-surface border border-slate-200 rounded-lg shadow-card;
   }
 
   .btn-primary {
-    @apply bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-900 px-6 py-3 rounded-lg font-semibold hover:from-yellow-400 hover:to-amber-400 transition-all duration-200 shadow-lg hover:shadow-glow;
+    @apply bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 px-6 py-3 rounded-lg font-semibold hover:from-amber-400 hover:to-yellow-400 transition-all duration-200 shadow-lg hover:shadow-glow;
   }
 
   .btn-secondary {
-    @apply border-2 border-accent text-accent px-6 py-3 rounded-lg font-semibold hover:bg-accent hover:text-slate-900 transition-all duration-200;
+    @apply border-2 border-accent text-accent px-6 py-3 rounded-lg font-semibold hover:bg-accent hover:text-white transition-all duration-200;
   }
 
   .metric-card {
-    @apply glass-card p-6 hover:bg-opacity-70 transition-all duration-200 cursor-pointer;
+    @apply glass-card p-6 hover:shadow-float transition-all duration-200 cursor-pointer;
   }
 
   .streak-badge {
     @apply inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 font-bold shadow-glow;
+  }
+
+  .status-on-track {
+    @apply bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .status-under-budget {
+    @apply bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .status-over-budget {
+    @apply bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium;
   }
 }

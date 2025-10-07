@@ -67,19 +67,19 @@ export function TasksCard({ tasks = [], isLoading = false }: TasksCardProps) {
     return (
       <div className="metric-card animate-pulse">
         <div className="flex items-center justify-between mb-4">
-          <div className="w-10 h-10 rounded-full bg-slate-700"></div>
-          <div className="h-6 w-20 bg-slate-700 rounded"></div>
-          <div className="h-8 w-8 bg-slate-700 rounded"></div>
+          <div className="w-10 h-10 rounded-full bg-slate-200"></div>
+          <div className="h-6 w-20 bg-slate-200 rounded"></div>
+          <div className="h-8 w-8 bg-slate-200 rounded"></div>
         </div>
-        <div className="h-4 w-32 bg-slate-700 rounded"></div>
+        <div className="h-4 w-32 bg-slate-200 rounded"></div>
       </div>
     );
   }
 
   const getPriorityColor = (score: number) => {
-    if (score >= 80) return 'text-red-400';
-    if (score >= 60) return 'text-yellow-400';
-    return 'text-blue-400';
+    if (score >= 80) return 'text-danger';
+    if (score >= 60) return 'text-warning';
+    return 'text-info';
   };
 
   const getPriorityIcon = (score: number) => {
@@ -95,34 +95,34 @@ export function TasksCard({ tasks = [], isLoading = false }: TasksCardProps) {
     >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center">
-            <ListTodo className="w-5 h-5 text-blue-500" />
+          <div className="w-10 h-10 rounded-full bg-info bg-opacity-20 flex items-center justify-center">
+            <ListTodo className="w-5 h-5 text-info" />
           </div>
           <h3 className="font-semibold">Tasks</h3>
         </div>
-        <div className="text-3xl font-bold text-blue-500">
+        <div className="text-3xl font-bold text-info">
           {pendingTasks.length}
         </div>
       </div>
 
       {expanded ? (
-        <div className="space-y-3 mt-4 pt-4 border-t border-slate-700">
+        <div className="space-y-3 mt-4 pt-4 border-t border-slate-200">
           {pendingTasks.length === 0 ? (
             <div className="text-center py-4">
-              <CheckCircle2 className="w-8 h-8 text-green-500 mx-auto mb-2" />
+              <CheckCircle2 className="w-8 h-8 text-success mx-auto mb-2" />
               <p className="text-sm text-muted">All tasks completed!</p>
             </div>
           ) : (
             pendingTasks.slice(0, 5).map(task => (
               <div
                 key={task.id}
-                className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-700 hover:bg-opacity-50 transition-all duration-200 cursor-pointer group"
+                className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-100 transition-all duration-200 cursor-pointer group"
                 onClick={(e) => {
                   e.stopPropagation();
                   toggleTask(task.id);
                 }}
               >
-                <Circle className="w-5 h-5 text-muted flex-shrink-0 group-hover:text-blue-400 transition-colors" />
+                <Circle className="w-5 h-5 text-muted flex-shrink-0 group-hover:text-info transition-colors" />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm truncate">{task.title}</p>
                   {task.description && (
@@ -145,12 +145,12 @@ export function TasksCard({ tasks = [], isLoading = false }: TasksCardProps) {
           )}
 
           {completedTasks.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-slate-700">
+            <div className="mt-4 pt-4 border-t border-slate-200">
               <p className="text-xs text-muted mb-2">Completed Today ({completedTasks.length})</p>
               <div className="space-y-1">
                 {completedTasks.slice(0, 3).map(task => (
                   <div key={task.id} className="flex items-center gap-2 text-xs text-muted">
-                    <CheckCircle2 className="w-3 h-3 text-green-500 flex-shrink-0" />
+                    <CheckCircle2 className="w-3 h-3 text-success flex-shrink-0" />
                     <span className="truncate">{task.title}</span>
                   </div>
                 ))}
@@ -162,14 +162,14 @@ export function TasksCard({ tasks = [], isLoading = false }: TasksCardProps) {
           )}
         </div>
       ) : (
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-muted">Tap to expand</p>
-          <div className="flex items-center gap-2 text-sm">
-            <span className="text-green-500">{completedTasks.length} done</span>
-            <span className="text-muted">•</span>
-            <span>{pendingTasks.length} pending</span>
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-muted">Tap to expand</p>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-success">{completedTasks.length} done</span>
+              <span className="text-muted">•</span>
+              <span>{pendingTasks.length} pending</span>
+            </div>
           </div>
-        </div>
       )}
     </div>
   );

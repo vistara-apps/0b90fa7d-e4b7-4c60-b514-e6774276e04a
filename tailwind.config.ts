@@ -17,6 +17,8 @@ const config: Config = {
         success: "var(--color-success)",
         warning: "var(--color-warning)",
         danger: "var(--color-danger)",
+        info: "var(--color-info)",
+        border: "var(--color-border)",
       },
       borderRadius: {
         sm: "var(--radius-sm)",

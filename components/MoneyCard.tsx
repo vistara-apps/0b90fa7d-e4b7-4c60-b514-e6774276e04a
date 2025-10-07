@@ -17,11 +17,11 @@ export function MoneyCard({ data, recentSpending = [], isLoading = false }: Mone
     return (
       <div className="metric-card animate-pulse">
         <div className="flex items-center justify-between mb-4">
-          <div className="w-10 h-10 rounded-full bg-slate-700"></div>
-          <div className="h-6 w-20 bg-slate-700 rounded"></div>
-          <div className="h-6 w-16 bg-slate-700 rounded"></div>
+          <div className="w-10 h-10 rounded-full bg-slate-200"></div>
+          <div className="h-6 w-20 bg-slate-200 rounded"></div>
+          <div className="h-6 w-16 bg-slate-200 rounded"></div>
         </div>
-        <div className="h-4 w-32 bg-slate-700 rounded"></div>
+        <div className="h-4 w-32 bg-slate-200 rounded"></div>
       </div>
     );
   }
@@ -32,19 +32,19 @@ export function MoneyCard({ data, recentSpending = [], isLoading = false }: Mone
 
   const getBudgetColor = (status: string) => {
     switch (status) {
-      case 'under': return 'text-green-500';
-      case 'on-track': return 'text-yellow-500';
-      case 'over': return 'text-red-500';
-      default: return 'text-yellow-500';
+      case 'under': return 'text-success';
+      case 'on-track': return 'text-success';
+      case 'over': return 'text-danger';
+      default: return 'text-success';
     }
   };
 
   const getBudgetBgColor = (status: string) => {
     switch (status) {
-      case 'under': return 'bg-green-500 bg-opacity-20';
-      case 'on-track': return 'bg-yellow-500 bg-opacity-20';
-      case 'over': return 'bg-red-500 bg-opacity-20';
-      default: return 'bg-yellow-500 bg-opacity-20';
+      case 'under': return 'bg-green-100';
+      case 'on-track': return 'bg-green-100';
+      case 'over': return 'bg-red-100';
+      default: return 'bg-green-100';
     }
   };
 
@@ -74,14 +74,14 @@ export function MoneyCard({ data, recentSpending = [], isLoading = false }: Mone
           </div>
           <h3 className="font-semibold">Budget</h3>
         </div>
-        <div className={`text-sm font-semibold ${getBudgetColor(budgetStatus)} bg-opacity-20 px-3 py-1 rounded-full flex items-center gap-1`}>
+        <div className={`text-sm font-semibold ${getBudgetColor(budgetStatus)} ${getBudgetBgColor(budgetStatus)} px-3 py-1 rounded-full flex items-center gap-1`}>
           {budgetStatus === 'over' && <AlertTriangle className="w-3 h-3" />}
           {getBudgetLabel(budgetStatus)}
         </div>
       </div>
 
       {expanded ? (
-        <div className="space-y-3 mt-4 pt-4 border-t border-slate-700">
+        <div className="space-y-3 mt-4 pt-4 border-t border-slate-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm text-muted">
               <DollarSign className="w-4 h-4" />

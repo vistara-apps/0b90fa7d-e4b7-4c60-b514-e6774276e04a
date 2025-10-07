@@ -56,35 +56,35 @@ export function InsightFeed({ insights = [], streakCount = 0, isLoading = false 
 
   if (isLoading) {
     return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="h-6 w-32 bg-slate-700 rounded animate-pulse"></div>
-          <div className="h-8 w-24 bg-slate-700 rounded animate-pulse"></div>
-        </div>
-        <div className="space-y-3">
-          {[1, 2].map(i => (
-            <div key={i} className="glass-card p-4 animate-pulse">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-slate-700"></div>
-                <div className="flex-1 space-y-2">
-                  <div className="h-4 bg-slate-700 rounded w-3/4"></div>
-                  <div className="h-4 bg-slate-700 rounded w-1/2"></div>
-                  <div className="h-8 bg-slate-700 rounded w-24"></div>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="h-6 w-32 bg-slate-200 rounded animate-pulse"></div>
+            <div className="h-8 w-24 bg-slate-200 rounded animate-pulse"></div>
+          </div>
+          <div className="space-y-3">
+            {[1, 2].map(i => (
+              <div key={i} className="glass-card p-4 animate-pulse">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-full bg-slate-200"></div>
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-slate-200 rounded w-3/4"></div>
+                    <div className="h-4 bg-slate-200 rounded w-1/2"></div>
+                    <div className="h-8 bg-slate-200 rounded w-24"></div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
     );
   }
 
   const getInsightTypeColor = (type: string) => {
     switch (type) {
-      case 'health-money': return 'text-green-400';
-      case 'health-productivity': return 'text-blue-400';
-      case 'money-productivity': return 'text-purple-400';
-      default: return 'text-yellow-400';
+      case 'health-money': return 'text-success';
+      case 'health-productivity': return 'text-info';
+      case 'money-productivity': return 'text-warning';
+      default: return 'text-warning';
     }
   };
 
@@ -101,7 +101,7 @@ export function InsightFeed({ insights = [], streakCount = 0, isLoading = false 
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold flex items-center gap-2">
-          <Lightbulb className="w-5 h-5 text-yellow-500" />
+          <Lightbulb className="w-5 h-5 text-warning" />
           AI Insights
         </h2>
         {streakCount > 0 && (
@@ -113,7 +113,7 @@ export function InsightFeed({ insights = [], streakCount = 0, isLoading = false 
 
       {localInsights.length === 0 ? (
         <div className="glass-card p-8 text-center">
-          <Sparkles className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
+          <Sparkles className="w-12 h-12 text-warning mx-auto mb-4" />
           <h3 className="text-lg font-semibold mb-2">No insights yet</h3>
           <p className="text-sm text-muted">
             Keep using Orbit and we'll generate personalized insights from your data.
@@ -125,10 +125,10 @@ export function InsightFeed({ insights = [], streakCount = 0, isLoading = false 
             <div key={insight.id} className="glass-card p-4">
               <div className="flex items-start gap-3">
                 <div className={`w-10 h-10 rounded-full bg-opacity-20 flex items-center justify-center flex-shrink-0 ${
-                  insight.unlocked ? 'bg-yellow-500' : 'bg-slate-600'
+                  insight.unlocked ? 'bg-amber-100' : 'bg-slate-200'
                 }`}>
                   {insight.unlocked ? (
-                    <Lightbulb className="w-5 h-5 text-yellow-500" />
+                    <Lightbulb className="w-5 h-5 text-warning" />
                   ) : (
                     <Lock className="w-5 h-5 text-slate-400" />
                   )}
@@ -164,7 +164,7 @@ export function InsightFeed({ insights = [], streakCount = 0, isLoading = false 
                     <div className="flex items-center gap-3 mt-3">
                       <button
                         onClick={() => shareInsight(insight)}
-                        className="flex items-center gap-2 text-sm text-accent hover:text-yellow-400 transition-colors duration-200"
+                        className="flex items-center gap-2 text-sm text-accent hover:text-warning transition-colors duration-200"
                       >
                         <Share2 className="w-4 h-4" />
                         Share as Frame
