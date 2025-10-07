@@ -1,86 +1,76 @@
 'use client';
 
-import { Activity, Moon, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Activity, Moon, TrendingUp, ChevronDown, ChevronUp, Heart } from 'lucide-react';
+import { useState } from 'react';
 import { CardSkeleton } from './SkeletonLoader';
 import { AnimatedCounter } from './AnimatedCounter';
+import { DailySnapshot } from '@/lib/types';
 
-interface HealthData {
-  score: number;
-  sleep: string;
-  steps: string;
-  hrv: string;
+interface HealthCardProps {
+  data?: DailySnapshot | null;
+  isLoading?: boolean;
 }
 
-export function HealthCard() {
+export function HealthCard({ data, isLoading = false }: HealthCardProps) {
   const [expanded, setExpanded] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<HealthData | null>(null);
 
-  useEffect(() => {
-    // Simulate API call
-    const fetchHealthData = async () => {
-      try {
-        setLoading(true);
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        setData({
-          score: 85,
-          sleep: '7.2h',
-          steps: '8,432',
-          hrv: '68ms'
-        });
-      } catch (err) {
-        setError('Failed to load health data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHealthData();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return <CardSkeleton />;
   }
 
-  if (error) {
-    return (
-      <div className="metric-card border-red-500 border-opacity-50">
-        <div className="flex items-center gap-2 text-red-400">
-          <Activity className="w-5 h-5" />
-          <span className="text-sm">Error loading health data</span>
-        </div>
-        <button 
-          onClick={() => window.location.reload()}
-          className="mt-2 text-xs text-accent hover:text-yellow-400 transition-colors"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
+  const healthScore = data?.healthScore || 0;
+  const sleepHours = data?.sleepHours || 0;
+  const steps = data?.steps || 0;
+  const hrv = data?.hrv || 0;
+
+  const getHealthColor = (score: number) => {
+    if (score >= 80) return 'text-emerald-400';
+    if (score >= 60) return 'text-amber-400';
+    return 'text-red-400';
+  };
+
+  const getHealthBgColor = (score: number) => {
+    if (score >= 80) return 'bg-emerald-500 bg-opacity-20 ring-emerald-500';
+    if (score >= 60) return 'bg-amber-500 bg-opacity-20 ring-amber-500';
+    return 'bg-red-500 bg-opacity-20 ring-red-500';
+  };
+
+  const getSleepIndicator = (hours: number) => {
+    if (hours >= 7) return 'bg-emerald-400';
+    if (hours >= 6) return 'bg-amber-400';
+    return 'bg-red-400';
+  };
+
+  const getStepsIndicator = (stepCount: number) => {
+    if (stepCount >= 8000) return 'bg-emerald-400';
+    if (stepCount >= 5000) return 'bg-amber-400';
+    return 'bg-red-400';
+  };
+
+  const getHrvIndicator = (hrvValue: number) => {
+    if (hrvValue >= 60) return 'bg-emerald-400';
+    if (hrvValue >= 40) return 'bg-amber-400';
+    return 'bg-red-400';
+  };
 
   return (
     <button 
       className="metric-card text-left w-full focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-50 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
       onClick={() => setExpanded(!expanded)}
       aria-expanded={expanded}
-      aria-label={`Health score: ${data?.score}. ${expanded ? 'Collapse' : 'Expand'} details`}
+      aria-label={`Health score: ${healthScore}. ${expanded ? 'Collapse' : 'Expand'} details`}
     >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center ring-1 ring-emerald-500 ring-opacity-30">
-            <Activity className="w-5 h-5 text-emerald-400" />
+          <div className={`w-10 h-10 rounded-full ${getHealthBgColor(healthScore)} ring-1 ring-opacity-30 flex items-center justify-center`}>
+            <Activity className={`w-5 h-5 ${getHealthColor(healthScore)}`} />
           </div>
           <h3 className="font-semibold text-white">Health</h3>
         </div>
         <div className="flex items-center gap-2">
           <AnimatedCounter 
-            value={data?.score || 0} 
-            className="text-3xl font-bold text-emerald-400"
+            value={healthScore} 
+            className={`text-3xl font-bold ${getHealthColor(healthScore)}`}
             duration={1500}
           />
           {expanded ? (
@@ -98,21 +88,30 @@ export function HealthCard() {
               <Moon className="w-4 h-4 text-blue-400" />
               <span>Sleep</span>
             </div>
-            <span className="font-semibold text-white">{data?.sleep}</span>
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-white">{sleepHours.toFixed(1)}h</span>
+              <div className={`w-2 h-2 rounded-full ${getSleepIndicator(sleepHours)}`} />
+            </div>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm text-gray-300">
               <TrendingUp className="w-4 h-4 text-green-400" />
               <span>Steps</span>
             </div>
-            <span className="font-semibold text-white">{data?.steps}</span>
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-white">{steps.toLocaleString()}</span>
+              <div className={`w-2 h-2 rounded-full ${getStepsIndicator(steps)}`} />
+            </div>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm text-gray-300">
-              <Activity className="w-4 h-4 text-purple-400" />
+              <Heart className="w-4 h-4 text-purple-400" />
               <span>HRV</span>
             </div>
-            <span className="font-semibold text-white">{data?.hrv}</span>
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-white">{hrv}ms</span>
+              <div className={`w-2 h-2 rounded-full ${getHrvIndicator(hrv)}`} />
+            </div>
           </div>
         </div>
       ) : (

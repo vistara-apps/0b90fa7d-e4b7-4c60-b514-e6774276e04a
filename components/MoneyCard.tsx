@@ -1,80 +1,44 @@
 'use client';
 
-import { Wallet2, TrendingDown, DollarSign, ChevronDown, ChevronUp } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Wallet2, TrendingDown, DollarSign, ChevronDown, ChevronUp, AlertTriangle } from 'lucide-react';
+import { useState } from 'react';
 import { CardSkeleton } from './SkeletonLoader';
 import { ProgressRing } from './ProgressRing';
 import { AnimatedCounter } from './AnimatedCounter';
+import { DailySnapshot, SpendingEvent } from '@/lib/types';
 
-interface BudgetData {
-  spentToday: number;
-  dailyBudget: number;
-  status: 'on-track' | 'warning' | 'over-budget';
+interface MoneyCardProps {
+  data?: DailySnapshot | null;
+  recentSpending?: SpendingEvent[];
+  isLoading?: boolean;
 }
 
-export function MoneyCard() {
+export function MoneyCard({ data, recentSpending = [], isLoading = false }: MoneyCardProps) {
   const [expanded, setExpanded] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<BudgetData | null>(null);
 
-  useEffect(() => {
-    const fetchBudgetData = async () => {
-      try {
-        setLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 1200));
-        
-        setData({
-          spentToday: 42.50,
-          dailyBudget: 75.00,
-          status: 'on-track'
-        });
-      } catch (err) {
-        setError('Failed to load budget data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBudgetData();
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return <CardSkeleton />;
   }
 
-  if (error) {
-    return (
-      <div className="metric-card border-red-500 border-opacity-50">
-        <div className="flex items-center gap-2 text-red-400">
-          <Wallet2 className="w-5 h-5" />
-          <span className="text-sm">Error loading budget data</span>
-        </div>
-        <button 
-          onClick={() => window.location.reload()}
-          className="mt-2 text-xs text-accent hover:text-yellow-400 transition-colors"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
+  const spentToday = data?.spendingToday || 0;
+  const dailyBudget = 75; // Default daily budget - could be made configurable
+  const budgetStatus = data?.budgetStatus || 'on-track';
+  const percentage = dailyBudget > 0 ? (spentToday / dailyBudget) * 100 : 0;
 
-  const percentage = data ? (data.spentToday / data.dailyBudget) * 100 : 0;
   const statusConfig = {
+    'under': { text: 'Under Budget', color: 'text-emerald-400 bg-emerald-500' },
     'on-track': { text: 'On Track', color: 'text-emerald-400 bg-emerald-500' },
-    'warning': { text: 'Warning', color: 'text-amber-400 bg-amber-500' },
-    'over-budget': { text: 'Over Budget', color: 'text-red-400 bg-red-500' }
+    'over': { text: 'Over Budget', color: 'text-red-400 bg-red-500' }
   };
 
-  const currentStatus = data ? statusConfig[data.status] : statusConfig['on-track'];
+  const currentStatus = statusConfig[budgetStatus] || statusConfig['on-track'];
 
   return (
     <button 
       className="metric-card text-left w-full focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-50 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
       onClick={() => setExpanded(!expanded)}
       aria-expanded={expanded}
-      aria-label={`Budget status: ${currentStatus.text}. Spent $${data?.spentToday} of $${data?.dailyBudget}. ${expanded ? 'Collapse' : 'Expand'} details`}
+      aria-label={`Budget status: ${currentStatus.text}. Spent $${spentToday} of $${dailyBudget}. ${expanded ? 'Collapse' : 'Expand'} details`}
     >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
@@ -102,19 +66,19 @@ export function MoneyCard() {
               <DollarSign className="w-4 h-4 text-red-400" />
               <span>Spent Today</span>
             </div>
-            <span className="font-semibold text-white">${data?.spentToday.toFixed(2)}</span>
+            <span className="font-semibold text-white">${spentToday.toFixed(2)}</span>
           </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm text-gray-300">
               <TrendingDown className="w-4 h-4 text-blue-400" />
               <span>Daily Budget</span>
             </div>
-            <span className="font-semibold text-white">${data?.dailyBudget.toFixed(2)}</span>
+            <span className="font-semibold text-white">${dailyBudget.toFixed(2)}</span>
           </div>
           <div className="space-y-4">
             <div className="flex justify-between text-xs text-gray-400">
               <span>{percentage.toFixed(0)}% used</span>
-              <span>${data ? (data.dailyBudget - data.spentToday).toFixed(2) : '0.00'} remaining</span>
+              <span>${(dailyBudget - spentToday).toFixed(2)} remaining</span>
             </div>
             <div className="flex items-center justify-center">
               <ProgressRing 
@@ -140,6 +104,19 @@ export function MoneyCard() {
                 style={{ width: `${Math.min(percentage, 100)}%` }}
               />
             </div>
+            {recentSpending.length > 0 && (
+              <div className="mt-4 pt-3 border-t border-gray-600">
+                <h4 className="text-sm font-medium text-gray-300 mb-2">Recent Spending</h4>
+                <div className="space-y-1">
+                  {recentSpending.slice(0, 3).map((expense) => (
+                    <div key={expense.id} className="flex items-center justify-between text-xs">
+                      <span className="text-gray-400 truncate flex-1 mr-2">{expense.description || expense.category}</span>
+                      <span className="text-white font-medium">${expense.amount.toFixed(2)}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       ) : (
