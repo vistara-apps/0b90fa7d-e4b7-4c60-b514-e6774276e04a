@@ -1,0 +1,14 @@
+{
+  "name": "Orbit",
+  "description": "Orbit is a Base Mini App built with Zara.",
+  "image": "https://dummyimage.com/1200x628/0a0b0d/ffffff.png&text=OG",
+  "external_url": "https://0b90fa7d-e4b7-4c60-b514-e6774276e04a.vercel.app",
+  "properties": {
+    "app": {
+      "name": "Orbit",
+      "description": "Orbit is a Base Mini App built with Zara.",
+      "url": "https://0b90fa7d-e4b7-4c60-b514-e6774276e04a.vercel.app",
+      "icon": "https://0co.to/images/zara-2.png"
+    }
+  }
+}

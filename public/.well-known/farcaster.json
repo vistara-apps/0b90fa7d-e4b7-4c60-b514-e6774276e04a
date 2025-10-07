@@ -1,0 +1,30 @@
+{
+  "accountAssociation": {
+    "header": "",
+    "payload": "",
+    "signature": ""
+  },
+  "frame": {
+    "version": "1",
+    "name": "Orbit",
+    "subtitle": "Built with Zara",
+    "description": "Orbit is a Base Mini App built with Zara.",
+    "iconUrl": "https://0co.to/images/zara-2.png",
+    "homeUrl": "https://0b90fa7de4b74c60b514e6774276e04a-d6dl.vercel.app",
+    "splashImageUrl": "https://0b90fa7de4b74c60b514e6774276e04a-d6dl.vercel.app/splash.png",
+    "splashBackgroundColor": "#000000",
+    "heroImageUrl": "https://0b90fa7de4b74c60b514e6774276e04a-d6dl.vercel.app/image.png",
+    "tagline": "Orbit",
+    "screenshotUrls": [
+      "https://0b90fa7de4b74c60b514e6774276e04a-d6dl.vercel.app/screenshot.png",
+      "https://0b90fa7de4b74c60b514e6774276e04a-d6dl.vercel.app/screenshot.png"
+    ],
+    "primaryCategory": "social",
+    "tags": [
+      "base",
+      "miniapp",
+      "onchainkit"
+    ],
+    "webhookUrl": "https://0b90fa7de4b74c60b514e6774276e04a-d6dl.vercel.app/api/webhook"
+  }
+}
