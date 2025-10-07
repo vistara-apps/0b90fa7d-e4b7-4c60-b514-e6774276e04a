@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Professional Finance Theme - Navy + Gold */
+    --color-bg: 15 23 42; /* slate-900 */
+    --color-fg: 248 250 252; /* slate-50 */
+    --color-accent: 255 215 0; /* gold */
+    --color-surface: 30 41 59; /* slate-800 */
+    --color-muted: 148 163 184; /* slate-400 */
+    --color-success: 34 197 94; /* green-500 */
+    --color-warning: 251 191 36; /* amber-400 */
+    --color-danger: 239 68 68; /* red-500 */
+    
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-full: 9999px;
+    
+    --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 20px rgba(255, 215, 0, 0.2);
+    --shadow-float: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  * {
+    @apply border-slate-700;
+  }
+  
+  body {
+    @apply bg-bg text-fg antialiased;
+    background: linear-gradient(135deg, rgb(15 23 42) 0%, rgb(30 41 59) 100%);
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-surface bg-opacity-50 backdrop-blur-lg border border-slate-700 rounded-lg shadow-card;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-900 px-6 py-3 rounded-lg font-semibold hover:from-yellow-400 hover:to-amber-400 transition-all duration-200 shadow-lg hover:shadow-glow;
+  }
+
+  .btn-secondary {
+    @apply border-2 border-accent text-accent px-6 py-3 rounded-lg font-semibold hover:bg-accent hover:text-slate-900 transition-all duration-200;
+  }
+
+  .metric-card {
+    @apply glass-card p-6 hover:bg-opacity-70 transition-all duration-200 cursor-pointer;
+  }
+
+  .streak-badge {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 font-bold shadow-glow;
+  }
+}
