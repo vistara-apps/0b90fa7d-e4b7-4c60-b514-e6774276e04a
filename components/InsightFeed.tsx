@@ -98,8 +98,8 @@ export function InsightFeed() {
   return (
     <div className="space-y-4 animate-in">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2">
-          <Lightbulb className="w-5 h-5 text-yellow-500" />
+        <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2 text-white">
+          <Lightbulb className="w-5 h-5 text-amber-400" />
           AI Insights
         </h2>
         <span className="streak-badge">
@@ -109,18 +109,18 @@ export function InsightFeed() {
 
       <div className="space-y-3">
         {insights.map(insight => (
-          <div key={insight.id} className="glass-card p-4 hover:bg-opacity-70 transition-all duration-200">
+          <div key={insight.id} className="glass-card p-4 hover:bg-opacity-90 transition-all duration-200">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-full bg-yellow-500 bg-opacity-20 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-full bg-amber-500 bg-opacity-20 flex items-center justify-center flex-shrink-0 ring-1 ring-amber-500 ring-opacity-30">
                 {insight.unlocked ? (
-                  <Lightbulb className="w-5 h-5 text-yellow-500" />
+                  <Lightbulb className="w-5 h-5 text-amber-400" />
                 ) : (
-                  <Lock className="w-5 h-5 text-yellow-500" />
+                  <Lock className="w-5 h-5 text-amber-400" />
                 )}
               </div>
               
               <div className="flex-1 min-w-0">
-                <p className={`text-sm sm:text-base leading-relaxed ${insight.unlocked ? '' : 'blur-sm select-none'}`}>
+                <p className={`text-sm sm:text-base leading-relaxed ${insight.unlocked ? 'text-white' : 'text-gray-300 blur-sm select-none'}`}>
                   {insight.unlocked ? insight.full : insight.preview}
                 </p>
                 
@@ -136,7 +136,7 @@ export function InsightFeed() {
                 
                 {insight.unlocked && (
                   <button 
-                    className="mt-3 flex items-center gap-2 text-sm text-accent hover:text-yellow-400 transition-colors duration-200 focus-ring rounded p-1 -m-1"
+                    className="mt-3 flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 transition-colors duration-200 focus-ring rounded p-1 -m-1"
                     aria-label="Share this insight as a frame"
                   >
                     <Share2 className="w-4 h-4" />

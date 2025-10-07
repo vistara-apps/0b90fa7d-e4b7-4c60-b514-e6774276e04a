@@ -62,9 +62,9 @@ export function MoneyCard() {
 
   const percentage = data ? (data.spentToday / data.dailyBudget) * 100 : 0;
   const statusConfig = {
-    'on-track': { text: 'On Track', color: 'text-green-500 bg-green-500' },
-    'warning': { text: 'Warning', color: 'text-yellow-500 bg-yellow-500' },
-    'over-budget': { text: 'Over Budget', color: 'text-red-500 bg-red-500' }
+    'on-track': { text: 'On Track', color: 'text-emerald-400 bg-emerald-500' },
+    'warning': { text: 'Warning', color: 'text-amber-400 bg-amber-500' },
+    'over-budget': { text: 'Over Budget', color: 'text-red-400 bg-red-500' }
   };
 
   const currentStatus = data ? statusConfig[data.status] : statusConfig['on-track'];
@@ -78,41 +78,41 @@ export function MoneyCard() {
     >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-full bg-yellow-500 bg-opacity-20 flex items-center justify-center">
-            <Wallet2 className="w-5 h-5 text-yellow-500" />
+          <div className="w-10 h-10 rounded-full bg-amber-500 bg-opacity-20 flex items-center justify-center ring-1 ring-amber-500 ring-opacity-30">
+            <Wallet2 className="w-5 h-5 text-amber-400" />
           </div>
-          <h3 className="font-semibold">Budget</h3>
+          <h3 className="font-semibold text-white">Budget</h3>
         </div>
         <div className="flex items-center gap-2">
           <div className={`text-sm font-semibold ${currentStatus.color} bg-opacity-20 px-3 py-1 rounded-full`}>
             {currentStatus.text}
           </div>
           {expanded ? (
-            <ChevronUp className="w-4 h-4 text-muted" />
+            <ChevronUp className="w-4 h-4 text-gray-400" />
           ) : (
-            <ChevronDown className="w-4 h-4 text-muted" />
+            <ChevronDown className="w-4 h-4 text-gray-400" />
           )}
         </div>
       </div>
 
       {expanded ? (
-        <div className="space-y-3 mt-4 pt-4 border-t border-slate-700">
+        <div className="space-y-3 mt-4 pt-4 border-t border-gray-600">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm text-muted">
-              <DollarSign className="w-4 h-4" />
+            <div className="flex items-center gap-2 text-sm text-gray-300">
+              <DollarSign className="w-4 h-4 text-red-400" />
               <span>Spent Today</span>
             </div>
-            <span className="font-semibold">${data?.spentToday.toFixed(2)}</span>
+            <span className="font-semibold text-white">${data?.spentToday.toFixed(2)}</span>
           </div>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm text-muted">
-              <TrendingDown className="w-4 h-4" />
+            <div className="flex items-center gap-2 text-sm text-gray-300">
+              <TrendingDown className="w-4 h-4 text-blue-400" />
               <span>Daily Budget</span>
             </div>
-            <span className="font-semibold">${data?.dailyBudget.toFixed(2)}</span>
+            <span className="font-semibold text-white">${data?.dailyBudget.toFixed(2)}</span>
           </div>
           <div className="space-y-4">
-            <div className="flex justify-between text-xs text-muted">
+            <div className="flex justify-between text-xs text-gray-400">
               <span>{percentage.toFixed(0)}% used</span>
               <span>${data ? (data.dailyBudget - data.spentToday).toFixed(2) : '0.00'} remaining</span>
             </div>
@@ -121,29 +121,29 @@ export function MoneyCard() {
                 progress={percentage} 
                 size={80} 
                 strokeWidth={6}
-                className="text-yellow-500"
+                className="text-amber-400"
               >
                 <div className="text-center">
                   <AnimatedCounter 
                     value={percentage} 
-                    className="text-sm font-bold text-yellow-500"
+                    className="text-sm font-bold text-amber-400"
                     suffix="%"
                     duration={1000}
                   />
-                  <div className="text-xs text-muted">used</div>
+                  <div className="text-xs text-gray-400">used</div>
                 </div>
               </ProgressRing>
             </div>
-            <div className="w-full bg-slate-700 rounded-full h-2 overflow-hidden">
+            <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
               <div 
-                className="bg-gradient-to-r from-yellow-500 to-amber-500 h-2 rounded-full transition-all duration-500 ease-out" 
+                className="bg-gradient-to-r from-amber-400 to-orange-500 h-2 rounded-full transition-all duration-500 ease-out" 
                 style={{ width: `${Math.min(percentage, 100)}%` }}
               />
             </div>
           </div>
         </div>
       ) : (
-        <p className="text-sm text-muted">Click to expand details</p>
+        <p className="text-sm text-gray-400">Click to expand details</p>
       )}
     </button>
   );

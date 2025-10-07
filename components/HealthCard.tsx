@@ -72,51 +72,51 @@ export function HealthCard() {
     >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-full bg-green-500 bg-opacity-20 flex items-center justify-center">
-            <Activity className="w-5 h-5 text-green-500" />
+          <div className="w-10 h-10 rounded-full bg-emerald-500 bg-opacity-20 flex items-center justify-center ring-1 ring-emerald-500 ring-opacity-30">
+            <Activity className="w-5 h-5 text-emerald-400" />
           </div>
-          <h3 className="font-semibold">Health</h3>
+          <h3 className="font-semibold text-white">Health</h3>
         </div>
         <div className="flex items-center gap-2">
           <AnimatedCounter 
             value={data?.score || 0} 
-            className="text-3xl font-bold text-green-500"
+            className="text-3xl font-bold text-emerald-400"
             duration={1500}
           />
           {expanded ? (
-            <ChevronUp className="w-4 h-4 text-muted" />
+            <ChevronUp className="w-4 h-4 text-gray-400" />
           ) : (
-            <ChevronDown className="w-4 h-4 text-muted" />
+            <ChevronDown className="w-4 h-4 text-gray-400" />
           )}
         </div>
       </div>
 
       {expanded ? (
-        <div className="space-y-3 mt-4 pt-4 border-t border-slate-700">
+        <div className="space-y-3 mt-4 pt-4 border-t border-gray-600">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm text-muted">
-              <Moon className="w-4 h-4" />
+            <div className="flex items-center gap-2 text-sm text-gray-300">
+              <Moon className="w-4 h-4 text-blue-400" />
               <span>Sleep</span>
             </div>
-            <span className="font-semibold">{data?.sleep}</span>
+            <span className="font-semibold text-white">{data?.sleep}</span>
           </div>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm text-muted">
-              <TrendingUp className="w-4 h-4" />
+            <div className="flex items-center gap-2 text-sm text-gray-300">
+              <TrendingUp className="w-4 h-4 text-green-400" />
               <span>Steps</span>
             </div>
-            <span className="font-semibold">{data?.steps}</span>
+            <span className="font-semibold text-white">{data?.steps}</span>
           </div>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm text-muted">
-              <Activity className="w-4 h-4" />
+            <div className="flex items-center gap-2 text-sm text-gray-300">
+              <Activity className="w-4 h-4 text-purple-400" />
               <span>HRV</span>
             </div>
-            <span className="font-semibold">{data?.hrv}</span>
+            <span className="font-semibold text-white">{data?.hrv}</span>
           </div>
         </div>
       ) : (
-        <p className="text-sm text-muted">Click to expand details</p>
+        <p className="text-sm text-gray-400">Click to expand details</p>
       )}
     </button>
   );

@@ -51,7 +51,7 @@ export function FloatingActionButton({ actions, className = '' }: FloatingAction
       {/* Main FAB button */}
       <button
         onClick={toggleMenu}
-        className="w-14 h-14 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-slate-900 rounded-full shadow-lg hover:shadow-glow flex items-center justify-center transition-all duration-200 transform hover:scale-110 active:scale-95"
+        className="w-14 h-14 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white rounded-full shadow-lg hover:shadow-glow flex items-center justify-center transition-all duration-200 transform hover:scale-110 active:scale-95"
         aria-label={isOpen ? 'Close menu' : 'Open quick actions'}
         aria-expanded={isOpen}
       >

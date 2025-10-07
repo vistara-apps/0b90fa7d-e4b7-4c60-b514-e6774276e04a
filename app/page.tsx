@@ -19,13 +19,13 @@ export default function Home() {
       icon: Target,
       label: 'Add Task',
       onClick: handleAddTask,
-      color: 'bg-blue-600'
+      color: 'bg-indigo-600'
     },
     {
       icon: DollarSign,
       label: 'Log Expense',
       onClick: handleLogExpense,
-      color: 'bg-green-600'
+      color: 'bg-emerald-600'
     },
     {
       icon: Zap,
@@ -36,7 +36,7 @@ export default function Home() {
   ];
 
   return (
-    <main className="min-h-screen pb-24 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <main className="min-h-screen pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
         <DashboardHeader />
         

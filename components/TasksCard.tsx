@@ -80,32 +80,32 @@ export function TasksCard() {
       >
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center">
-              <ListTodo className="w-5 h-5 text-blue-500" />
+            <div className="w-10 h-10 rounded-full bg-indigo-500 bg-opacity-20 flex items-center justify-center ring-1 ring-indigo-500 ring-opacity-30">
+              <ListTodo className="w-5 h-5 text-indigo-400" />
             </div>
-            <h3 className="font-semibold">Tasks</h3>
+            <h3 className="font-semibold text-white">Tasks</h3>
           </div>
           <div className="flex items-center gap-2">
-            <div className="text-3xl font-bold text-blue-500">{pendingTasks.length}</div>
+            <div className="text-3xl font-bold text-indigo-400">{pendingTasks.length}</div>
             {expanded ? (
-              <ChevronUp className="w-4 h-4 text-muted" />
+              <ChevronUp className="w-4 h-4 text-gray-400" />
             ) : (
-              <ChevronDown className="w-4 h-4 text-muted" />
+              <ChevronDown className="w-4 h-4 text-gray-400" />
             )}
           </div>
         </div>
 
         {!expanded && (
-          <p className="text-sm text-muted">Click to expand details</p>
+          <p className="text-sm text-gray-400">Click to expand details</p>
         )}
       </button>
 
       {expanded && (
-        <div className="space-y-2 mt-4 pt-4 border-t border-slate-700">
+        <div className="space-y-2 mt-4 pt-4 border-t border-gray-600">
           {tasks.map(task => (
             <button 
               key={task.id}
-              className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-700 hover:bg-opacity-50 transition-all duration-200 cursor-pointer w-full text-left focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-30"
+              className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700 hover:bg-opacity-50 transition-all duration-200 cursor-pointer w-full text-left focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-30"
               onClick={(e) => {
                 e.stopPropagation();
                 toggleTask(task.id);
@@ -113,26 +113,26 @@ export function TasksCard() {
               aria-label={`${task.done ? 'Mark as incomplete' : 'Mark as complete'}: ${task.title}`}
             >
               {task.done ? (
-                <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
               ) : (
-                <Circle className="w-5 h-5 text-muted flex-shrink-0 hover:text-green-400 transition-colors" />
+                <Circle className="w-5 h-5 text-gray-400 flex-shrink-0 hover:text-emerald-400 transition-colors" />
               )}
-              <span className={`text-sm flex-1 transition-all duration-200 ${task.done ? 'line-through text-muted' : ''}`}>
+              <span className={`text-sm flex-1 transition-all duration-200 ${task.done ? 'line-through text-gray-500' : 'text-white'}`}>
                 {task.title}
               </span>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted">AI: {task.priority}</span>
+                <span className="text-xs text-gray-400">AI: {task.priority}</span>
                 <div className={`w-2 h-2 rounded-full ${
-                  task.priority >= 90 ? 'bg-red-500' : 
-                  task.priority >= 80 ? 'bg-yellow-500' : 
-                  'bg-green-500'
+                  task.priority >= 90 ? 'bg-red-400' : 
+                  task.priority >= 80 ? 'bg-amber-400' : 
+                  'bg-emerald-400'
                 }`} />
               </div>
             </button>
           ))}
           
           {completedTasks.length > 0 && (
-            <div className="text-xs text-muted mt-4 pt-2 border-t border-slate-700">
+            <div className="text-xs text-gray-400 mt-4 pt-2 border-t border-gray-600">
               ✓ {completedTasks.length} completed today
             </div>
           )}
