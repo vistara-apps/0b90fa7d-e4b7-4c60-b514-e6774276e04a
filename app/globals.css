@@ -41,18 +41,69 @@
   }
 
   .btn-primary {
-    @apply bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-900 px-6 py-3 rounded-lg font-semibold hover:from-yellow-400 hover:to-amber-400 transition-all duration-200 shadow-lg hover:shadow-glow;
+    @apply bg-gradient-to-r from-yellow-500 to-amber-500 text-slate-900 px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:from-yellow-400 hover:to-amber-400 active:from-yellow-600 active:to-amber-600 transition-all duration-200 shadow-lg hover:shadow-glow touch-manipulation;
   }
 
   .btn-secondary {
-    @apply border-2 border-accent text-accent px-6 py-3 rounded-lg font-semibold hover:bg-accent hover:text-slate-900 transition-all duration-200;
+    @apply border-2 border-accent text-accent px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold hover:bg-accent hover:text-slate-900 active:bg-accent active:bg-opacity-80 transition-all duration-200 touch-manipulation;
   }
 
   .metric-card {
-    @apply glass-card p-6 hover:bg-opacity-70 transition-all duration-200 cursor-pointer;
+    @apply glass-card p-4 sm:p-6 hover:bg-opacity-70 active:bg-opacity-80 transition-all duration-200 cursor-pointer touch-manipulation select-none;
   }
 
   .streak-badge {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 font-bold shadow-glow;
+    @apply inline-flex items-center gap-2 px-3 sm:px-4 py-1 sm:py-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-900 font-bold shadow-glow text-sm;
+  }
+
+  /* Mobile-specific improvements */
+  @media (max-width: 640px) {
+    .metric-card {
+      @apply p-4;
+    }
+    
+    .glass-card {
+      @apply rounded-xl;
+    }
+    
+    /* Improve touch targets */
+    button, [role="button"] {
+      @apply min-h-[44px] touch-manipulation;
+    }
+  }
+
+  /* Focus improvements for accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-50 focus:ring-offset-2 focus:ring-offset-slate-900;
+  }
+
+  /* Smooth animations */
+  .animate-in {
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Loading animation improvements */
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  .animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 }
