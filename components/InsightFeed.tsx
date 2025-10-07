@@ -1,186 +1,120 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Lightbulb, Lock, Share2, Sparkles } from 'lucide-react';
-import { Insight as InsightType } from '@/lib/types';
+import { Lightbulb, Lock, Share2 } from 'lucide-react';
+import { useState } from 'react';
+import { InsightSkeleton } from './SkeletonLoader';
+import { Insight } from '@/lib/types';
 
 interface InsightFeedProps {
-  insights?: InsightType[];
+  insights?: Insight[];
   streakCount?: number;
   isLoading?: boolean;
 }
 
 export function InsightFeed({ insights = [], streakCount = 0, isLoading = false }: InsightFeedProps) {
-  const [localInsights, setLocalInsights] = useState<InsightType[]>(insights);
+  const [localInsights, setLocalInsights] = useState(insights);
 
-  React.useEffect(() => {
-    setLocalInsights(insights);
-  }, [insights]);
-
-  const unlockInsight = async (insightId: string) => {
-    // TODO: Implement MiniKit payment flow
-    try {
-      // For now, just mark as unlocked
-      setLocalInsights(prevInsights =>
-        prevInsights.map(insight =>
-          insight.id === insightId
-            ? { ...insight, unlocked: true }
-            : insight
-        )
-      );
-
-      // TODO: Call API to unlock insight
-      // const response = await fetch(`/api/insights/${insightId}/unlock`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ paymentTx: '...' })
-      // });
-    } catch (error) {
-      console.error('Failed to unlock insight:', error);
-    }
-  };
-
-  const shareInsight = async (insight: InsightType) => {
-    // TODO: Implement Farcaster Frame sharing
-    try {
-      // const response = await fetch('/api/frames/share', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ insightId: insight.id })
-      // });
-      console.log('Sharing insight:', insight.id);
-    } catch (error) {
-      console.error('Failed to share insight:', error);
-    }
+  const unlockInsight = (id: string) => {
+    setLocalInsights(prev => 
+      prev.map(insight => 
+        insight.id === id ? { ...insight, unlocked: true } : insight
+      )
+    );
+    // This would typically make an API call to unlock the insight
+    console.log('Unlock insight:', id);
   };
 
   if (isLoading) {
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <div className="h-6 w-32 bg-slate-700 rounded animate-pulse"></div>
-          <div className="h-8 w-24 bg-slate-700 rounded animate-pulse"></div>
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 bg-slate-700 rounded animate-pulse" />
+            <div className="w-24 h-6 bg-slate-700 rounded animate-pulse" />
+          </div>
+          <div className="w-32 h-8 bg-slate-700 rounded-full animate-pulse" />
         </div>
         <div className="space-y-3">
-          {[1, 2].map(i => (
-            <div key={i} className="glass-card p-4 animate-pulse">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-slate-700"></div>
-                <div className="flex-1 space-y-2">
-                  <div className="h-4 bg-slate-700 rounded w-3/4"></div>
-                  <div className="h-4 bg-slate-700 rounded w-1/2"></div>
-                  <div className="h-8 bg-slate-700 rounded w-24"></div>
-                </div>
-              </div>
-            </div>
-          ))}
+          <InsightSkeleton />
+          <InsightSkeleton />
         </div>
       </div>
     );
   }
 
-  const getInsightTypeColor = (type: string) => {
-    switch (type) {
-      case 'health-money': return 'text-green-400';
-      case 'health-productivity': return 'text-blue-400';
-      case 'money-productivity': return 'text-purple-400';
-      default: return 'text-yellow-400';
-    }
-  };
-
-  const getInsightTypeIcon = (type: string) => {
-    switch (type) {
-      case 'health-money': return '💚💰';
-      case 'health-productivity': return '💚📈';
-      case 'money-productivity': return '💰📈';
-      default: return '🔍';
-    }
-  };
-
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold flex items-center gap-2">
-          <Lightbulb className="w-5 h-5 text-yellow-500" />
+    <div className="space-y-4 animate-in">
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <h2 className="text-lg sm:text-xl font-semibold flex items-center gap-2 text-white">
+          <Lightbulb className="w-5 h-5 text-amber-400" />
           AI Insights
         </h2>
-        {streakCount > 0 && (
-          <span className="streak-badge text-sm">
-            🔥 {streakCount} Day Streak
-          </span>
-        )}
+        <span className="streak-badge">
+          🔥 {streakCount} Day Streak
+        </span>
       </div>
 
-      {localInsights.length === 0 ? (
-        <div className="glass-card p-8 text-center">
-          <Sparkles className="w-12 h-12 text-yellow-500 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold mb-2">No insights yet</h3>
-          <p className="text-sm text-muted">
-            Keep using Orbit and we'll generate personalized insights from your data.
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {localInsights.map(insight => (
-            <div key={insight.id} className="glass-card p-4">
+      <div className="space-y-3">
+        {localInsights.length === 0 ? (
+          <div className="glass-card p-8 text-center">
+            <Lightbulb className="w-12 h-12 mx-auto mb-4 text-amber-400 opacity-50" />
+            <h3 className="text-lg font-semibold text-white mb-2">No insights yet</h3>
+            <p className="text-gray-400">Keep using the app to unlock AI-powered insights about your patterns.</p>
+          </div>
+        ) : (
+          localInsights.map(insight => (
+            <div key={insight.id} className="glass-card p-4 hover:bg-opacity-90 transition-all duration-200">
               <div className="flex items-start gap-3">
-                <div className={`w-10 h-10 rounded-full bg-opacity-20 flex items-center justify-center flex-shrink-0 ${
-                  insight.unlocked ? 'bg-yellow-500' : 'bg-slate-600'
-                }`}>
+                <div className="w-10 h-10 rounded-full bg-amber-500 bg-opacity-20 flex items-center justify-center flex-shrink-0 ring-1 ring-amber-500 ring-opacity-30">
                   {insight.unlocked ? (
-                    <Lightbulb className="w-5 h-5 text-yellow-500" />
+                    <Lightbulb className="w-5 h-5 text-amber-400" />
                   ) : (
-                    <Lock className="w-5 h-5 text-slate-400" />
+                    <Lock className="w-5 h-5 text-amber-400" />
                   )}
                 </div>
-
-                <div className="flex-1">
+                
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xs text-muted">
-                      {getInsightTypeIcon(insight.type)}
+                    <span className="text-xs px-2 py-1 rounded-full bg-indigo-500 bg-opacity-20 text-indigo-400 font-medium">
+                      {insight.type.replace('-', ' → ')}
                     </span>
-                    <span className={`text-xs font-medium ${getInsightTypeColor(insight.type)}`}>
-                      {insight.type.replace('-', ' & ').toUpperCase()}
-                    </span>
-                    <span className="text-xs text-muted">
-                      {Math.round(insight.confidence * 100)}% confidence
+                    <span className="text-xs text-gray-400">
+                      {insight.confidence}% confidence
                     </span>
                   </div>
-
-                  <p className={`text-sm leading-relaxed ${insight.unlocked ? '' : 'blur-sm select-none'}`}>
-                    {insight.unlocked ? insight.pattern : `${insight.pattern.substring(0, 50)}...`}
+                  
+                  <p className={`text-sm sm:text-base leading-relaxed ${
+                    insight.unlocked ? 'text-white' : 'text-gray-300 blur-sm select-none'
+                  }`}>
+                    {insight.pattern}
                   </p>
-
+                  
                   {!insight.unlocked && (
-                    <button
+                    <button 
                       onClick={() => unlockInsight(insight.id)}
-                      className="mt-3 btn-primary text-sm py-2 px-4"
+                      className="mt-3 btn-primary text-sm focus-ring"
+                      aria-label={`Unlock insight for $${(insight.unlockPrice / 100).toFixed(2)}`}
                     >
                       Unlock for ${(insight.unlockPrice / 100).toFixed(2)}
                     </button>
                   )}
-
+                  
                   {insight.unlocked && (
-                    <div className="flex items-center gap-3 mt-3">
-                      <button
-                        onClick={() => shareInsight(insight)}
-                        className="flex items-center gap-2 text-sm text-accent hover:text-yellow-400 transition-colors duration-200"
-                      >
-                        <Share2 className="w-4 h-4" />
-                        Share as Frame
-                      </button>
-                      <span className="text-xs text-muted">
-                        Unlocked {new Date(insight.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
+                    <button 
+                      className="mt-3 flex items-center gap-2 text-sm text-indigo-400 hover:text-indigo-300 transition-colors duration-200 focus-ring rounded p-1 -m-1"
+                      aria-label="Share this insight as a frame"
+                    >
+                      <Share2 className="w-4 h-4" />
+                      <span className="hidden sm:inline">Share as Frame</span>
+                      <span className="sm:hidden">Share</span>
+                    </button>
                   )}
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 }
-

@@ -1,177 +1,111 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { CheckCircle2, Circle, ListTodo, Clock } from 'lucide-react';
-import { Task as TaskType } from '@/lib/types';
+import { CheckCircle2, Circle, ListTodo, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
+import { CardSkeleton } from './SkeletonLoader';
+import { Task } from '@/lib/types';
 
 interface TasksCardProps {
-  tasks?: TaskType[];
+  tasks?: Task[];
   isLoading?: boolean;
 }
 
 export function TasksCard({ tasks = [], isLoading = false }: TasksCardProps) {
   const [expanded, setExpanded] = useState(false);
-  const [localTasks, setLocalTasks] = useState<TaskType[]>(tasks);
-
-  // Update local tasks when props change
-  useEffect(() => {
-    setLocalTasks(tasks);
-  }, [tasks]);
-
-  const toggleTask = async (taskId: string) => {
-    // Optimistically update UI
-    setLocalTasks(prevTasks =>
-      prevTasks.map(task =>
-        task.id === taskId
-          ? { ...task, status: task.status === 'done' ? 'pending' : 'done' }
-          : task
-      )
-    );
-
-    // TODO: Call API to update task status
-    try {
-      const response = await fetch(`/api/tasks/${taskId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          status: localTasks.find(t => t.id === taskId)?.status === 'done' ? 'pending' : 'done'
-        })
-      });
-
-      if (!response.ok) {
-        // Revert on error
-        setLocalTasks(prevTasks =>
-          prevTasks.map(task =>
-            task.id === taskId
-              ? { ...task, status: task.status === 'done' ? 'pending' : 'done' }
-              : task
-          )
-        );
-      }
-    } catch (error) {
-      // Revert on error
-      setLocalTasks(prevTasks =>
-        prevTasks.map(task =>
-          task.id === taskId
-            ? { ...task, status: task.status === 'done' ? 'pending' : 'done' }
-            : task
-        )
-      );
-    }
-  };
-
-  const pendingTasks = localTasks.filter(task => task.status !== 'done');
-  const completedTasks = localTasks.filter(task => task.status === 'done');
 
   if (isLoading) {
-    return (
-      <div className="metric-card animate-pulse">
-        <div className="flex items-center justify-between mb-4">
-          <div className="w-10 h-10 rounded-full bg-slate-700"></div>
-          <div className="h-6 w-20 bg-slate-700 rounded"></div>
-          <div className="h-8 w-8 bg-slate-700 rounded"></div>
-        </div>
-        <div className="h-4 w-32 bg-slate-700 rounded"></div>
-      </div>
-    );
+    return <CardSkeleton />;
   }
 
-  const getPriorityColor = (score: number) => {
-    if (score >= 80) return 'text-red-400';
-    if (score >= 60) return 'text-yellow-400';
-    return 'text-blue-400';
+  const pendingTasks = tasks.filter(task => task.status === 'pending');
+  const completedTasks = tasks.filter(task => task.status === 'done');
+
+  const toggleTask = (taskId: string) => {
+    // This would typically update the task via API
+    console.log('Toggle task:', taskId);
   };
 
-  const getPriorityIcon = (score: number) => {
-    if (score >= 80) return '🔴';
-    if (score >= 60) return '🟡';
-    return '🔵';
+  const getPriorityColor = (priority: number) => {
+    if (priority >= 90) return 'bg-red-400';
+    if (priority >= 80) return 'bg-amber-400';
+    return 'bg-emerald-400';
   };
 
   return (
-    <div
-      className="metric-card cursor-pointer hover:bg-opacity-70 transition-all duration-200"
-      onClick={() => setExpanded(!expanded)}
-    >
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center">
-            <ListTodo className="w-5 h-5 text-blue-500" />
+    <div className="metric-card">
+      <button 
+        className="w-full text-left focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-50 rounded-lg"
+        onClick={() => setExpanded(!expanded)}
+        aria-expanded={expanded}
+        aria-label={`Tasks: ${pendingTasks.length} pending. ${expanded ? 'Collapse' : 'Expand'} details`}
+      >
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-full bg-indigo-500 bg-opacity-20 flex items-center justify-center ring-1 ring-indigo-500 ring-opacity-30">
+              <ListTodo className="w-5 h-5 text-indigo-400" />
+            </div>
+            <h3 className="font-semibold text-white">Tasks</h3>
           </div>
-          <h3 className="font-semibold">Tasks</h3>
+          <div className="flex items-center gap-2">
+            <div className="text-3xl font-bold text-indigo-400">{pendingTasks.length}</div>
+            {expanded ? (
+              <ChevronUp className="w-4 h-4 text-gray-400" />
+            ) : (
+              <ChevronDown className="w-4 h-4 text-gray-400" />
+            )}
+          </div>
         </div>
-        <div className="text-3xl font-bold text-blue-500">
-          {pendingTasks.length}
-        </div>
-      </div>
 
-      {expanded ? (
-        <div className="space-y-3 mt-4 pt-4 border-t border-slate-700">
-          {pendingTasks.length === 0 ? (
-            <div className="text-center py-4">
-              <CheckCircle2 className="w-8 h-8 text-green-500 mx-auto mb-2" />
-              <p className="text-sm text-muted">All tasks completed!</p>
+        {!expanded && (
+          <p className="text-sm text-gray-400">Click to expand details</p>
+        )}
+      </button>
+
+      {expanded && (
+        <div className="space-y-2 mt-4 pt-4 border-t border-gray-600">
+          {tasks.length === 0 ? (
+            <div className="text-center py-4 text-gray-400">
+              <ListTodo className="w-8 h-8 mx-auto mb-2 opacity-50" />
+              <p className="text-sm">No tasks yet</p>
             </div>
           ) : (
-            pendingTasks.slice(0, 5).map(task => (
-              <div
-                key={task.id}
-                className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-700 hover:bg-opacity-50 transition-all duration-200 cursor-pointer group"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleTask(task.id);
-                }}
-              >
-                <Circle className="w-5 h-5 text-muted flex-shrink-0 group-hover:text-blue-400 transition-colors" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm truncate">{task.title}</p>
-                  {task.description && (
-                    <p className="text-xs text-muted truncate">{task.description}</p>
+            <>
+              {tasks.map(task => (
+                <button 
+                  key={task.id}
+                  className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-700 hover:bg-opacity-50 transition-all duration-200 cursor-pointer w-full text-left focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-30"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleTask(task.id);
+                  }}
+                  aria-label={`${task.status === 'done' ? 'Mark as incomplete' : 'Mark as complete'}: ${task.title}`}
+                >
+                  {task.status === 'done' ? (
+                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                  ) : (
+                    <Circle className="w-5 h-5 text-gray-400 flex-shrink-0 hover:text-emerald-400 transition-colors" />
                   )}
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className={`text-xs ${getPriorityColor(task.aiPriorityScore)}`}>
-                      Priority {task.aiPriorityScore}
-                    </span>
-                    {task.dueDate && (
-                      <span className="text-xs text-muted flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {new Date(task.dueDate).toLocaleDateString()}
-                      </span>
-                    )}
+                  <span className={`text-sm flex-1 transition-all duration-200 ${
+                    task.status === 'done' ? 'line-through text-gray-500' : 'text-white'
+                  }`}>
+                    {task.title}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-400">AI: {task.aiPriorityScore}</span>
+                    <div className={`w-2 h-2 rounded-full ${getPriorityColor(task.aiPriorityScore)}`} />
                   </div>
+                </button>
+              ))}
+              
+              {completedTasks.length > 0 && (
+                <div className="text-xs text-gray-400 mt-4 pt-2 border-t border-gray-600">
+                  ✓ {completedTasks.length} completed today
                 </div>
-              </div>
-            ))
+              )}
+            </>
           )}
-
-          {completedTasks.length > 0 && (
-            <div className="mt-4 pt-4 border-t border-slate-700">
-              <p className="text-xs text-muted mb-2">Completed Today ({completedTasks.length})</p>
-              <div className="space-y-1">
-                {completedTasks.slice(0, 3).map(task => (
-                  <div key={task.id} className="flex items-center gap-2 text-xs text-muted">
-                    <CheckCircle2 className="w-3 h-3 text-green-500 flex-shrink-0" />
-                    <span className="truncate">{task.title}</span>
-                  </div>
-                ))}
-                {completedTasks.length > 3 && (
-                  <p className="text-xs text-muted">+{completedTasks.length - 3} more completed</p>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-muted">Tap to expand</p>
-          <div className="flex items-center gap-2 text-sm">
-            <span className="text-green-500">{completedTasks.length} done</span>
-            <span className="text-muted">•</span>
-            <span>{pendingTasks.length} pending</span>
-          </div>
         </div>
       )}
     </div>
   );
 }
-
